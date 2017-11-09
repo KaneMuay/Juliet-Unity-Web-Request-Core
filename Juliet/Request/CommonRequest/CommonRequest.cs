@@ -11,7 +11,7 @@ namespace JulietUtil.Request
 {
     public class CommonRequest : ICommonRequest
     {
-        private const string TAG = "Common";
+        private const string TAG = "COMMON REQUEST";
 
         private MethodType methodType = MethodType.POST;
         private string url;
@@ -59,8 +59,7 @@ namespace JulietUtil.Request
             MethodForm form = new MethodForm()
             {
                 Method = this.methodType,
-                URL = this.url,
-                Action = UserAction.Common
+                URL = this.url
             };
 
             switch (this.methodType)
@@ -77,12 +76,12 @@ namespace JulietUtil.Request
                         contentPost.Add(key, value);
                     }
 
-                    form.Post = contentPost;
+                    form.POST = contentPost;
 
                     break;
                 case MethodType.GET:
                     
-                    form.Get = this.url;
+                    form.GET = this.url;
 
                     break;
                 case MethodType.PUT:
@@ -99,27 +98,12 @@ namespace JulietUtil.Request
 
                     string jsonPut = JsonUtility.ToJson(contentPut);
 
-                    form.Put = System.Text.Encoding.UTF8.GetBytes(jsonPut);
+                    form.PUT = System.Text.Encoding.UTF8.GetBytes(jsonPut);
 
                     break;
                 case MethodType.DELETE:
                     
-                    form.Delete = this.url;
-
-                    break;
-                case MethodType.PATCH:
-
-                    WWWForm formPatch = new WWWForm();
-
-                    foreach (var attribute in attributes)
-                    {
-                        string key = attribute.Key;
-                        string value = (string)attribute.Value;
-
-                        formPatch.AddField(key, value);
-                    }
-
-                    form.Patch = formPatch;
+                    form.DELETE = this.url;
 
                     break;
             }

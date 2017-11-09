@@ -8,7 +8,8 @@ namespace JulietUtil.Interface
 {
     public interface IMasterRequest
     {
-        ILoginRequest LoginRequest();
-        ICommonRequest CommonRequest();
+        ILoginRequest Login();
+        ICommonRequest Common();
+        ITextureRequest Texture();
     }
 }

@@ -36,6 +36,11 @@ namespace JulietUtil.API
             StartCoroutine(Connecting(methodForm, successCallback, failCallback));
         }
 
+        public void Request(MethodForm methodForm, Action<Texture> successCallback, Action<string> failCallback)
+        {
+            StartCoroutine(Connecting(methodForm, successCallback, failCallback));
+        }
+
         public IEnumerator Connecting(MethodForm methodForm, Action<string> successCallback, Action<string> failCallback)
         {
             JulietLogger.Info(TAG, "Connecting to ... " + methodForm.WebRequest.url);
@@ -46,40 +51,140 @@ namespace JulietUtil.API
 
                 yield return www.SendWebRequest();
 
-                JulietLogger.Info(TAG, "Responsed from Server ... ");
-
-                if (!www.isNetworkError)
+                try
                 {
-                    long code = www.responseCode;
-                    JulietLogger.Info(TAG, "Http Status Code " + code);
+                    JulietLogger.Info(TAG, "Responsed from Server ... ");
 
-                    switch (code)
+                    if (!www.isNetworkError)
                     {
-                        case 200:
+                        long code = www.responseCode;
+                        JulietLogger.Info(TAG, "Http Status Code " + code);
 
-                            JulietLogger.Info(TAG, "Successed Responsed ... " + www.downloadHandler.text);
+                        switch (code)
+                        {
+                            case 200:
 
-                            successCallback(www.downloadHandler.text);
-                            break;
+                                JulietLogger.Info(TAG, "Successed Responsed ... " + www.downloadHandler.text);
 
-                        default:
-                            string jsonFormat = "{ \"Status\":" + code + ", \"Message\": \"" + www.error + " \"}";
+                                successCallback(www.downloadHandler.text);
+                                break;
 
-                            JulietLogger.Info(TAG, "Failed Responsed  ... " + jsonFormat);
+                            default:
+                                string errorFormat = "{ \"Status\":" + code + ", \"Message\": \"" + www.error + " \"}";
 
-                            failCallback(jsonFormat);
+                                JulietLogger.Info(TAG, "Failed Responsed  ... " + errorFormat);
 
-                            break;
+                                failCallback(errorFormat);
+
+                                break;
+                        }
+                    }
+                    else
+                    {
+                        string errorFormat = "{ \"Status\":" + 500 + ", \"Message\": \"" + www.error + " \"}";
+
+                        JulietLogger.Info(TAG, "Internal Server Failed Responsed  ... " + errorFormat);
+
+                        failCallback(errorFormat);
+                    }
+                }
+                catch (WebException ex)
+                {
+                    JulietLogger.Info(TAG, "Error Web Exception " + ex.Message);
+
+                    string errorFormat = "";
+
+                    if (ex.Status == WebExceptionStatus.ProtocolError)
+                    {
+                        if (ex.Response is HttpWebResponse response)
+                        {
+                            errorFormat = "{ \"Status\":" + (int)response.StatusCode + ", \"Message\": \"" + www.error + " \"}";
+
+                            failCallback(errorFormat);
+                        }
+                        else
+                        {
+                            errorFormat = "{ \"Status\":" + 400 + ", \"Message\": \"" + www.error + " \"}";
+                        }
+                    }
+                    else
+                    {
+                        errorFormat = "{ \"Status\":" + 400 + ", \"Message\": \"" + www.error + " \"}";
+                    }
+
+                    failCallback(errorFormat);
+                }
+                catch (Exception ex)
+                {
+                    JulietLogger.Info(TAG, "Error Web Exception " + ex.Message);
+
+                    string  errorFormat = "{ \"Status\":" + 400 + ", \"Message\": \"" + www.error + " \"}";
+
+                    failCallback(errorFormat);
+                }
+            }
+        }
+
+        public IEnumerator Connecting(MethodForm methodForm, Action<Texture> successCallback, Action<string> failCallback)
+        {
+            JulietLogger.Info(TAG, "Connecting to ... " + methodForm.WebRequest.url);
+
+            UnityWebRequest www = UnityWebRequestTexture.GetTexture(methodForm.URL);
+
+            yield return www.SendWebRequest();
+            
+            try
+            {
+                if (www.isNetworkError || www.isHttpError)
+                {
+                    string errorFormat = string.Format(JulietShareVariable.FORMAT_ERROR, www.responseCode, www.error);
+
+                    JulietLogger.Info(TAG, "Failed Responsed  ... " + errorFormat);
+
+                    failCallback(errorFormat);
+                }
+                else
+                {
+                    JulietLogger.Info(TAG, "Successed Responsed");
+
+                    Texture texture = ((DownloadHandlerTexture)www.downloadHandler).texture;
+
+                    successCallback(texture);
+                }
+            }
+            catch (WebException ex)
+            {
+                JulietLogger.Info(TAG, "Error Web Exception " + ex.Message);
+
+                string errorFormat = "";
+
+                if (ex.Status == WebExceptionStatus.ProtocolError)
+                {
+                    if (ex.Response is HttpWebResponse response)
+                    {
+                        errorFormat = "{ \"Status\":" + (int)response.StatusCode + ", \"Message\": \"" + www.error + " \"}";
+
+                        failCallback(errorFormat);
+                    }
+                    else
+                    {
+                        errorFormat = "{ \"Status\":" + 400 + ", \"Message\": \"" + www.error + " \"}";
                     }
                 }
                 else
                 {
-                    string jsonFormat = "{ \"Status\": \"" + 500 + " \", \"Message\": \"" + www.error + " \"}";
-
-                    JulietLogger.Info(TAG, "Internal Server Failed Responsed  ... " + jsonFormat);
-
-                    failCallback(jsonFormat);
+                    errorFormat = "{ \"Status\":" + 400 + ", \"Message\": \"" + www.error + " \"}";
                 }
+
+                failCallback(errorFormat);
+            }
+            catch (Exception ex)
+            {
+                JulietLogger.Info(TAG, "Error Web Exception " + ex.Message);
+
+                string errorFormat = "{ \"Status\":" + 400 + ", \"Message\": \"" + www.error + " \"}";
+
+                failCallback(errorFormat);
             }
         }
     }

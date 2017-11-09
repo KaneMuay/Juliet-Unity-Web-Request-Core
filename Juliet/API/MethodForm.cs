@@ -8,16 +8,16 @@ namespace JulietUtil.API
 {
     public class MethodForm
     {
-        private const string TAG = "Method Form";
+        private const string TAG = "METFORM FORM";
 
-        private string url;
-        private MethodType methodType;
-        private Dictionary<string, string> post;
-        private string get;
-        private string delete;
-        private byte[] put;
-        private UnityWebRequest request;
-        private UserAction action = UserAction.Common;
+        private string _url;
+        private MethodType _methodType;
+        private Dictionary<string, string> _post;
+        private Dictionary<string, string> _postLogin;
+        private string _get;
+        private string _delete;
+        private byte[] _put;
+        private UnityWebRequest _request;
         private WWWForm patch;
 
         #region Getter Setter
@@ -26,12 +26,12 @@ namespace JulietUtil.API
         {
             get
             {
-                return url;
+                return _url;
             }
 
             set
             {
-                url = value;
+                _url = value;
             }
         }
 
@@ -39,120 +39,116 @@ namespace JulietUtil.API
         {
             get
             {
-                return methodType;
+                return _methodType;
             }
 
             set
             {
-                methodType = value;
+                _methodType = value;
             }
         }
-
-        public UserAction Action
+                
+        public Dictionary<string, string> POSTLOGIN
         {
             get
             {
-                return action;
+                return _postLogin;
             }
 
             set
             {
-                action = value;
-            }
-        }
+                _postLogin = value;
 
-        public Dictionary<string, string> Post
-        {
-            get
-            {
-                return post;
-            }
+                _request = UnityWebRequest.Post(_url, _postLogin);
 
-            set
-            {
-                JulietLogger.Info(TAG, "Action " + Action);
-                JulietLogger.Info(TAG, JulietConfigure.Instance.JulietHeaderConfig.AuthorizationConfig.Key + 
-                    ", " + JulietConfigure.Instance.JulietHeaderConfig.AuthorizationConfig.Value);
+                if (JulietConfigure.Instance.isSupportOAuthBasic)
+                    _request.SetRequestHeader(JulietConfigure.Instance.JulietHeaderConfig.AuthorizationConfig.Key, JulietConfigure.Instance.JulietHeaderConfig.AuthorizationConfig.Value);
 
-
-                post = value;
-
-                request = UnityWebRequest.Post(url, post);
-
-                request.SetRequestHeader(JulietConfigure.Instance.JulietHeaderConfig.AuthorizationConfig.Key, JulietConfigure.Instance.JulietHeaderConfig.AuthorizationConfig.Value);
-
-                if (Action == UserAction.Login)
+                foreach (var header in JulietConfigure.Instance.JulietHeaderConfig.LoginHeaderConfig.Headers)
                 {
-                    foreach (var header in JulietConfigure.Instance.JulietHeaderConfig.LoginHeaderConfig.Headers)
-                    {
-                        request.SetRequestHeader(header.Key, header.Value);
-
-                        JulietLogger.Info(TAG, header.Key + ", " + header.Value);
-                    }
-                }
-                else
-                {
-                    foreach (var header in JulietConfigure.Instance.JulietHeaderConfig.CommonHeaderConfig.Headers)
-                    {
-                        request.SetRequestHeader(header.Key, header.Value);
-
-                        JulietLogger.Info(TAG, header.Key + ", " + header.Value);
-                    }
-                }
-            }
-        }
-
-        public string Get
-        {
-            get
-            {
-                return get;
-            }
-
-            set
-            {
-                JulietLogger.Info(TAG, "GET " + value);
-
-                get = value;
-
-                request = UnityWebRequest.Get(get);
-                request.SetRequestHeader(JulietConfigure.Instance.JulietHeaderConfig.AuthorizationConfig.Key, JulietConfigure.Instance.JulietHeaderConfig.AuthorizationConfig.Value);
-
-                foreach (var header in JulietConfigure.Instance.JulietHeaderConfig.CommonHeaderConfig.Headers)
-                {
-                    request.SetRequestHeader(header.Key, header.Value);
+                    _request.SetRequestHeader(header.Key, header.Value);
 
                     JulietLogger.Info(TAG, header.Key + ", " + header.Value);
                 }
             }
         }
 
-        public byte[] Put
+        public Dictionary<string, string> POST
         {
             get
             {
-                return put;
+                return _post;
             }
 
             set
             {
-                JulietLogger.Info(TAG, "PUT " + value);
+                _post = value;
 
-                put = value;
+                _request = UnityWebRequest.Post(_url, _post);
 
-                request = UnityWebRequest.Put(url, put);
-                request.SetRequestHeader(JulietConfigure.Instance.JulietHeaderConfig.AuthorizationConfig.Key, JulietConfigure.Instance.JulietHeaderConfig.AuthorizationConfig.Value);
+                if(JulietConfigure.Instance.isSupportOAuthBasic)
+                    _request.SetRequestHeader(JulietConfigure.Instance.JulietHeaderConfig.AuthorizationConfig.Key, JulietConfigure.Instance.JulietHeaderConfig.AuthorizationConfig.Value);
 
                 foreach (var header in JulietConfigure.Instance.JulietHeaderConfig.CommonHeaderConfig.Headers)
                 {
-                    request.SetRequestHeader(header.Key, header.Value);
+                    _request.SetRequestHeader(header.Key, header.Value);
 
                     JulietLogger.Info(TAG, header.Key + ", " + header.Value);
                 }
             }
         }
 
-        public WWWForm Patch
+        public string GET
+        {
+            get
+            {
+                return _get;
+            }
+
+            set
+            {
+                _get = value;
+
+                _request = UnityWebRequest.Get(_get);
+
+                if (JulietConfigure.Instance.isSupportOAuthBasic)
+                    _request.SetRequestHeader(JulietConfigure.Instance.JulietHeaderConfig.AuthorizationConfig.Key, JulietConfigure.Instance.JulietHeaderConfig.AuthorizationConfig.Value);
+
+                foreach (var header in JulietConfigure.Instance.JulietHeaderConfig.CommonHeaderConfig.Headers)
+                {
+                    _request.SetRequestHeader(header.Key, header.Value);
+
+                    JulietLogger.Info(TAG, header.Key + ", " + header.Value);
+                }
+            }
+        }
+
+        public byte[] PUT
+        {
+            get
+            {
+                return _put;
+            }
+
+            set
+            {
+                _put = value;
+
+                _request = UnityWebRequest.Put(_url, _put);
+
+                if (JulietConfigure.Instance.isSupportOAuthBasic)
+                    _request.SetRequestHeader(JulietConfigure.Instance.JulietHeaderConfig.AuthorizationConfig.Key, JulietConfigure.Instance.JulietHeaderConfig.AuthorizationConfig.Value);
+
+                foreach (var header in JulietConfigure.Instance.JulietHeaderConfig.CommonHeaderConfig.Headers)
+                {
+                    _request.SetRequestHeader(header.Key, header.Value);
+
+                    JulietLogger.Info(TAG, header.Key + ", " + header.Value);
+                }
+            }
+        }
+
+        public WWWForm PATCH
         {
             get
             {
@@ -161,15 +157,15 @@ namespace JulietUtil.API
 
             set
             {
-                JulietLogger.Info(TAG, "PATCH " + value.ToString());
-
                 patch = value;
-                request = new UnityWebRequest(url);
-                request.SetRequestHeader(JulietConfigure.Instance.JulietHeaderConfig.AuthorizationConfig.Key, JulietConfigure.Instance.JulietHeaderConfig.AuthorizationConfig.Value);
+                _request = new UnityWebRequest(_url);
+
+                if (JulietConfigure.Instance.isSupportOAuthBasic)
+                    _request.SetRequestHeader(JulietConfigure.Instance.JulietHeaderConfig.AuthorizationConfig.Key, JulietConfigure.Instance.JulietHeaderConfig.AuthorizationConfig.Value);
 
                 foreach (var header in JulietConfigure.Instance.JulietHeaderConfig.CommonHeaderConfig.Headers)
                 {
-                    request.SetRequestHeader(header.Key, header.Value);
+                    _request.SetRequestHeader(header.Key, header.Value);
 
                     JulietLogger.Info(TAG, header.Key + ", " + header.Value);
                 }
@@ -177,25 +173,25 @@ namespace JulietUtil.API
             }
         }
 
-        public string Delete
+        public string DELETE
         {
             get
             {
-                return delete;
+                return _delete;
             }
 
             set
             {
-                JulietLogger.Info(TAG, "PATCH " + value);
+                _delete = value;
 
-                delete = value;
+                _request = UnityWebRequest.Delete(_delete);
 
-                request = UnityWebRequest.Delete(delete);
-                request.SetRequestHeader(JulietConfigure.Instance.JulietHeaderConfig.AuthorizationConfig.Key, JulietConfigure.Instance.JulietHeaderConfig.AuthorizationConfig.Value);
+                if (JulietConfigure.Instance.isSupportOAuthBasic)
+                    _request.SetRequestHeader(JulietConfigure.Instance.JulietHeaderConfig.AuthorizationConfig.Key, JulietConfigure.Instance.JulietHeaderConfig.AuthorizationConfig.Value);
 
                 foreach (var header in JulietConfigure.Instance.JulietHeaderConfig.CommonHeaderConfig.Headers)
                 {
-                    request.SetRequestHeader(header.Key, header.Value);
+                    _request.SetRequestHeader(header.Key, header.Value);
 
                     JulietLogger.Info(TAG, header.Key + ", " + header.Value);
                 }
@@ -206,12 +202,12 @@ namespace JulietUtil.API
         {
             get
             {
-                return request;
+                return _request;
             }
 
             set
             {
-                request = value;
+                _request = value;
             }
         }
 

@@ -24,7 +24,7 @@ namespace JulietUtil.API
 
         #endregion
 
-        public string OAUTH_KEY = "";
+        public bool isSupportOAuthBasic = false;
         public List<string> optinalKeys = new List<string>();
         public List<string> optionalValues = new List<string>();
         

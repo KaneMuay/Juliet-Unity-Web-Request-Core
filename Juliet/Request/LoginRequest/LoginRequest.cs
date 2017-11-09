@@ -10,17 +10,19 @@ namespace JulietUtil.Request
 {
     public class LoginRequest : ILoginRequest
     {
-        private string TAG = "Login";
-
-        private const string USERNAME = "username";
-        private const string PASSWORD = "password";
-        private const string REFRESH_TOKEN = "refreshToken";
+        private string TAG = "LOGIN REQUEST";
+        
+        private Dictionary<string, object> attributes = new Dictionary<string, object>();
 
         private MethodType methodType = MethodType.POST;
+
         private string url;
-        private string username;
-        private string password;
-        private string refreshToken;
+
+        private string usernameKey;
+        private string usernameValue;
+
+        private string passwordKey;
+        private string passwordValue;
 
         public override ILoginRequest SetURL(string url, MethodType methodType = MethodType.POST)
         {
@@ -33,29 +35,31 @@ namespace JulietUtil.Request
             return this;
         }
 
-        public override ILoginRequest SetUsername(string username)
+        public override ILoginRequest SetUsername(string key, string value)
         {
-            this.username = username;
+            this.usernameKey = key;
+            this.usernameValue = value;
 
-            JulietLogger.Info(TAG, "SetUsername " + this.username);
+            JulietLogger.Info(TAG, "SetUsername " + this.usernameKey + ", " + this.usernameValue);
 
             return this;
         }
 
-        public override ILoginRequest SetPassword(string password)
+        public override ILoginRequest SetPassword(string key, string value)
         {
-            this.password = password;
+            this.passwordKey = key;
+            this.passwordValue = value;
 
-            JulietLogger.Info(TAG, "SetPassword " + this.password);
+            JulietLogger.Info(TAG, "SetPassword " + this.passwordKey + ", " + this.passwordValue);
 
             return this;
         }
 
-        public override ILoginRequest SetRefreshToken(string refreshToken)
+        public override ILoginRequest SetEventAttribute(string key, object value)
         {
-            this.refreshToken = refreshToken;
+            this.attributes.Add(key, value);
 
-            JulietLogger.Info(TAG, "SetRefreshToken " + this.refreshToken);
+            JulietLogger.Info(TAG, "Key " + key + ", Value " + value);
 
             return this;
         }
@@ -66,17 +70,23 @@ namespace JulietUtil.Request
 
             Dictionary<string, string> content = new Dictionary<string, string>
             {
-                { USERNAME, this.username },
-                { PASSWORD, this.password },
-                { REFRESH_TOKEN, this.refreshToken}
+                { this.usernameKey, this.usernameValue },
+                { this.passwordKey, this.passwordValue }
             };
+
+            foreach (var attribute in attributes)
+            {
+                string key = attribute.Key;
+                string value = (string)attribute.Value;
+
+                content.Add(key, value);
+            }
 
             MethodForm form = new MethodForm()
             {
                 Method = this.methodType,
                 URL = this.url,
-                Action = UserAction.Login,
-                Post = content
+                POSTLOGIN = content
             };
             
             JulietAPI.Instance.Request(form, success, fail);

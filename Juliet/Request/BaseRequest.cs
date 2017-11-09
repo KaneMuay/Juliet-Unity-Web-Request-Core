@@ -7,7 +7,8 @@ namespace JulietUtil.Request
 {
     public abstract class BaseRequest
     {
-        public abstract void Send(Action<string> success, Action<string> fail);
+        public virtual void Send(Action<string> success, Action<string> fail) { }
+        public virtual void Send(Action<Texture> success, Action<string> faill) { }
 
         protected virtual string SetURLFormat(string url, object[] param)
         {

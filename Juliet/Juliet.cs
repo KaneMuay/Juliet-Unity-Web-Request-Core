@@ -9,7 +9,7 @@ namespace JulietUtil.Master
 {
     public class Juliet
     {
-        private string TAG = "Juliet";
+        private string TAG = "JULIET";
         public const string API_JULIET = "JulietAPI";
 
         public Juliet()

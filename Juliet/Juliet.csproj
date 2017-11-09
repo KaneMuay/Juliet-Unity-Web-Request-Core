@@ -44,13 +44,14 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
     <Reference Include="UnityEngine">
-      <HintPath>..\..\..\..\Program Files\Unity\Editor\Data\Managed\UnityEngine.dll</HintPath>
+      <HintPath>C:\Program Files\Unity\Editor\Data\Managed\UnityEngine.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.UI">
-      <HintPath>..\..\..\..\Program Files\Unity\Editor\Data\UnityExtensions\Unity\GUISystem\UnityEngine.UI.dll</HintPath>
+      <HintPath>C:\Program Files\Unity\Editor\Data\UnityExtensions\Unity\GUISystem\UnityEngine.UI.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Abstract\ITextureRequest.cs" />
     <Compile Include="API\JulietConfigure.cs" />
     <Compile Include="API\JulietHeaderConfig.cs" />
     <Compile Include="Enums\DebugMode.cs" />
@@ -61,6 +62,7 @@
     <Compile Include="API\JulietAPI.cs" />
     <Compile Include="API\MethodForm.cs" />
     <Compile Include="Juliet.cs" />
+    <Compile Include="Request\TextureRequest\TextureRequestcs.cs" />
     <Compile Include="Static\JulietLogger.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Request\BaseRequest.cs" />
@@ -70,6 +72,7 @@
     <Compile Include="Abstract\ILoginRequest.cs" />
     <Compile Include="Request\LoginRequest\LoginRequest.cs" />
     <Compile Include="Request\MasterRequest.cs" />
+    <Compile Include="Static\JulietShareVariable.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
