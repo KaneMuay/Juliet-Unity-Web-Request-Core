@@ -32,6 +32,8 @@ namespace JulietUtil.API
         
         public void SetOptionalKeyHeader(params string[] optionals)
         {
+            optinalKeys.Clear();
+
             foreach (var key in optionals)
             {
                 optinalKeys.Add(key);
@@ -40,6 +42,8 @@ namespace JulietUtil.API
 
         public void SetOptionalValueHeader(params string[] optionals)
         {
+            optionalValues.Clear();
+
             foreach (var value in optionals)
             {
                 optionalValues.Add(value);
@@ -58,6 +62,22 @@ namespace JulietUtil.API
                     Key = key,
                     Value = value
                 };
+
+                Header dupplicateHeader = null;
+
+                foreach (var item in JulietHeaderConfig.CommonHeaderConfig.Headers)
+                {
+                    if(item.Key.Equals(header.Key))
+                    {
+                        dupplicateHeader = item;
+                        break;
+                    }
+                }
+
+                if(dupplicateHeader != null)
+                {
+                    JulietHeaderConfig.CommonHeaderConfig.Headers.Remove(dupplicateHeader);
+                }
 
                 JulietHeaderConfig.CommonHeaderConfig.Headers.Add(header);
             }
