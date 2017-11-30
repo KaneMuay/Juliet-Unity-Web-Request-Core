@@ -10,7 +10,7 @@ namespace JulietUtil.API
 {
     public class JulietAPI : MonoBehaviour, IJulietAPI
     {
-        #region Instance
+        #region Singleton
 
         private static JulietAPI _instance;
 

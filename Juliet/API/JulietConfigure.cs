@@ -5,7 +5,7 @@ namespace JulietUtil.API
 {
     public class JulietConfigure : MonoBehaviour
     {
-        #region Instance
+        #region Singleton
 
         private static JulietConfigure _instance;
 
@@ -23,11 +23,15 @@ namespace JulietUtil.API
         }
 
         #endregion
-
+        
+        [Header("Configure")]
         public bool isSupportOAuthBasic = false;
+
+        [Header("Optional")]
         public List<string> optinalKeys = new List<string>();
         public List<string> optionalValues = new List<string>();
-        
+
+        [Header("Header Configure")]
         public JulietHeaderConfig JulietHeaderConfig;
         
         public void SetOptionalKeyHeader(params string[] optionals)
@@ -62,22 +66,11 @@ namespace JulietUtil.API
                     Key = key,
                     Value = value
                 };
-
-                Header dupplicateHeader = null;
-
-                foreach (var item in JulietHeaderConfig.CommonHeaderConfig.Headers)
-                {
-                    if(item.Key.Equals(header.Key))
-                    {
-                        dupplicateHeader = item;
-                        break;
-                    }
-                }
+                
+                Header dupplicateHeader = JulietHeaderConfig.CommonHeaderConfig.Headers.Find(x => x.Key == header.Key);
 
                 if(dupplicateHeader != null)
-                {
                     JulietHeaderConfig.CommonHeaderConfig.Headers.Remove(dupplicateHeader);
-                }
 
                 JulietHeaderConfig.CommonHeaderConfig.Headers.Add(header);
             }

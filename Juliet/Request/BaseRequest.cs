@@ -15,7 +15,7 @@ namespace JulietUtil.Request
             int length = param.Length;
             string formatURL = "";
 
-            // Hard code and wait for best solution to fix it
+            // Hard code Fuck Fuck Fuck
             switch (length)
             {
                 case 1: formatURL = string.Format(url, param[0]); break;
@@ -27,6 +27,7 @@ namespace JulietUtil.Request
                 case 7: formatURL = string.Format(url, param[0], param[1], param[2], param[3], param[4], param[5], param[6]); break;
                 case 8: formatURL = string.Format(url, param[0], param[1], param[2], param[3], param[4], param[5], param[6], param[7]); break;
                 case 9: formatURL = string.Format(url, param[0], param[1], param[2], param[3], param[4], param[5], param[6], param[7], param[8]); break;
+                case 10: formatURL = string.Format(url, param[0], param[1], param[2], param[3], param[4], param[5], param[6], param[7], param[8], param[9]); break;
             }
 
             return formatURL;
