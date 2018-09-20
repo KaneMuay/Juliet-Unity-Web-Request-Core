@@ -12,6 +12,7 @@ namespace JulietUtil.API
 
         private string _url;
         private MethodType _methodType;
+        private WWWForm _postImage;
         private Dictionary<string, string> _post;
         private Dictionary<string, string> _postLogin;
         private string _get;
@@ -88,6 +89,34 @@ namespace JulietUtil.API
                 _post = value;
 
                 _request = UnityWebRequest.Post(_url, _post);
+
+                if (JulietConfigure.Instance != null)
+                {
+                    if (JulietConfigure.Instance.isSupportOAuthBasic)
+                        _request.SetRequestHeader(JulietConfigure.Instance.JulietHeaderConfig.AuthorizationConfig.Key, JulietConfigure.Instance.JulietHeaderConfig.AuthorizationConfig.Value);
+
+                    foreach (var header in JulietConfigure.Instance.JulietHeaderConfig.CommonHeaderConfig.Headers)
+                    {
+                        _request.SetRequestHeader(header.Key, header.Value);
+
+                        JulietLogger.Info(TAG, header.Key + ", " + header.Value);
+                    }
+                }
+            }
+        }
+
+        public WWWForm POST_IMAGES
+        {
+            get
+            {
+                return _postImage;
+            }
+
+            set
+            {
+                _postImage = value;
+
+                _request = UnityWebRequest.Post(_url, _postImage);
 
                 if (JulietConfigure.Instance != null)
                 {

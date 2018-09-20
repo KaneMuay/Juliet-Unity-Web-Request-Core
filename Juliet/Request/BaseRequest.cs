@@ -1,7 +1,5 @@
-﻿using UnityEngine;
-using System.Collections;
-using System;
-using JulietUtil.API;
+﻿using System;
+using UnityEngine;
 
 namespace JulietUtil.Request
 {
