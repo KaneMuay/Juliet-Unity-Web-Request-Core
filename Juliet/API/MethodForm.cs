@@ -61,14 +61,17 @@ namespace JulietUtil.API
 
                 _request = UnityWebRequest.Post(_url, _postLogin);
 
-                if (JulietConfigure.Instance.isSupportOAuthBasic)
-                    _request.SetRequestHeader(JulietConfigure.Instance.JulietHeaderConfig.AuthorizationConfig.Key, JulietConfigure.Instance.JulietHeaderConfig.AuthorizationConfig.Value);
-
-                foreach (var header in JulietConfigure.Instance.JulietHeaderConfig.LoginHeaderConfig.Headers)
+                if (JulietConfigure.Instance != null)
                 {
-                    _request.SetRequestHeader(header.Key, header.Value);
+                    if (JulietConfigure.Instance.isSupportOAuthBasic)
+                        _request.SetRequestHeader(JulietConfigure.Instance.JulietHeaderConfig.AuthorizationConfig.Key, JulietConfigure.Instance.JulietHeaderConfig.AuthorizationConfig.Value);
 
-                    JulietLogger.Info(TAG, header.Key + ", " + header.Value);
+                    foreach (var header in JulietConfigure.Instance.JulietHeaderConfig.LoginHeaderConfig.Headers)
+                    {
+                        _request.SetRequestHeader(header.Key, header.Value);
+
+                        JulietLogger.Info(TAG, header.Key + ", " + header.Value);
+                    }
                 }
             }
         }
@@ -86,14 +89,17 @@ namespace JulietUtil.API
 
                 _request = UnityWebRequest.Post(_url, _post);
 
-                if(JulietConfigure.Instance.isSupportOAuthBasic)
-                    _request.SetRequestHeader(JulietConfigure.Instance.JulietHeaderConfig.AuthorizationConfig.Key, JulietConfigure.Instance.JulietHeaderConfig.AuthorizationConfig.Value);
-
-                foreach (var header in JulietConfigure.Instance.JulietHeaderConfig.CommonHeaderConfig.Headers)
+                if (JulietConfigure.Instance != null)
                 {
-                    _request.SetRequestHeader(header.Key, header.Value);
+                    if (JulietConfigure.Instance.isSupportOAuthBasic)
+                        _request.SetRequestHeader(JulietConfigure.Instance.JulietHeaderConfig.AuthorizationConfig.Key, JulietConfigure.Instance.JulietHeaderConfig.AuthorizationConfig.Value);
 
-                    JulietLogger.Info(TAG, header.Key + ", " + header.Value);
+                    foreach (var header in JulietConfigure.Instance.JulietHeaderConfig.CommonHeaderConfig.Headers)
+                    {
+                        _request.SetRequestHeader(header.Key, header.Value);
+
+                        JulietLogger.Info(TAG, header.Key + ", " + header.Value);
+                    }
                 }
             }
         }
@@ -111,14 +117,17 @@ namespace JulietUtil.API
 
                 _request = UnityWebRequest.Get(_get);
 
-                if (JulietConfigure.Instance.isSupportOAuthBasic)
-                    _request.SetRequestHeader(JulietConfigure.Instance.JulietHeaderConfig.AuthorizationConfig.Key, JulietConfigure.Instance.JulietHeaderConfig.AuthorizationConfig.Value);
-
-                foreach (var header in JulietConfigure.Instance.JulietHeaderConfig.CommonHeaderConfig.Headers)
+                if (JulietConfigure.Instance != null)
                 {
-                    _request.SetRequestHeader(header.Key, header.Value);
+                    if (JulietConfigure.Instance.isSupportOAuthBasic)
+                        _request.SetRequestHeader(JulietConfigure.Instance.JulietHeaderConfig.AuthorizationConfig.Key, JulietConfigure.Instance.JulietHeaderConfig.AuthorizationConfig.Value);
 
-                    JulietLogger.Info(TAG, header.Key + ", " + header.Value);
+                    foreach (var header in JulietConfigure.Instance.JulietHeaderConfig.CommonHeaderConfig.Headers)
+                    {
+                        _request.SetRequestHeader(header.Key, header.Value);
+
+                        JulietLogger.Info(TAG, header.Key + ", " + header.Value);
+                    }
                 }
             }
         }
@@ -136,14 +145,17 @@ namespace JulietUtil.API
 
                 _request = UnityWebRequest.Put(_url, _put);
 
-                if (JulietConfigure.Instance.isSupportOAuthBasic)
-                    _request.SetRequestHeader(JulietConfigure.Instance.JulietHeaderConfig.AuthorizationConfig.Key, JulietConfigure.Instance.JulietHeaderConfig.AuthorizationConfig.Value);
-
-                foreach (var header in JulietConfigure.Instance.JulietHeaderConfig.CommonHeaderConfig.Headers)
+                if (JulietConfigure.Instance != null)
                 {
-                    _request.SetRequestHeader(header.Key, header.Value);
+                    if (JulietConfigure.Instance.isSupportOAuthBasic)
+                        _request.SetRequestHeader(JulietConfigure.Instance.JulietHeaderConfig.AuthorizationConfig.Key, JulietConfigure.Instance.JulietHeaderConfig.AuthorizationConfig.Value);
 
-                    JulietLogger.Info(TAG, header.Key + ", " + header.Value);
+                    foreach (var header in JulietConfigure.Instance.JulietHeaderConfig.CommonHeaderConfig.Headers)
+                    {
+                        _request.SetRequestHeader(header.Key, header.Value);
+
+                        JulietLogger.Info(TAG, header.Key + ", " + header.Value);
+                    }
                 }
             }
         }
@@ -160,16 +172,18 @@ namespace JulietUtil.API
                 patch = value;
                 _request = new UnityWebRequest(_url);
 
-                if (JulietConfigure.Instance.isSupportOAuthBasic)
-                    _request.SetRequestHeader(JulietConfigure.Instance.JulietHeaderConfig.AuthorizationConfig.Key, JulietConfigure.Instance.JulietHeaderConfig.AuthorizationConfig.Value);
-
-                foreach (var header in JulietConfigure.Instance.JulietHeaderConfig.CommonHeaderConfig.Headers)
+                if (JulietConfigure.Instance != null)
                 {
-                    _request.SetRequestHeader(header.Key, header.Value);
+                    if (JulietConfigure.Instance.isSupportOAuthBasic)
+                        _request.SetRequestHeader(JulietConfigure.Instance.JulietHeaderConfig.AuthorizationConfig.Key, JulietConfigure.Instance.JulietHeaderConfig.AuthorizationConfig.Value);
 
-                    JulietLogger.Info(TAG, header.Key + ", " + header.Value);
+                    foreach (var header in JulietConfigure.Instance.JulietHeaderConfig.CommonHeaderConfig.Headers)
+                    {
+                        _request.SetRequestHeader(header.Key, header.Value);
+
+                        JulietLogger.Info(TAG, header.Key + ", " + header.Value);
+                    }
                 }
-
             }
         }
 
@@ -186,14 +200,17 @@ namespace JulietUtil.API
 
                 _request = UnityWebRequest.Delete(_delete);
 
-                if (JulietConfigure.Instance.isSupportOAuthBasic)
-                    _request.SetRequestHeader(JulietConfigure.Instance.JulietHeaderConfig.AuthorizationConfig.Key, JulietConfigure.Instance.JulietHeaderConfig.AuthorizationConfig.Value);
-
-                foreach (var header in JulietConfigure.Instance.JulietHeaderConfig.CommonHeaderConfig.Headers)
+                if (JulietConfigure.Instance != null)
                 {
-                    _request.SetRequestHeader(header.Key, header.Value);
+                    if (JulietConfigure.Instance.isSupportOAuthBasic)
+                        _request.SetRequestHeader(JulietConfigure.Instance.JulietHeaderConfig.AuthorizationConfig.Key, JulietConfigure.Instance.JulietHeaderConfig.AuthorizationConfig.Value);
 
-                    JulietLogger.Info(TAG, header.Key + ", " + header.Value);
+                    foreach (var header in JulietConfigure.Instance.JulietHeaderConfig.CommonHeaderConfig.Headers)
+                    {
+                        _request.SetRequestHeader(header.Key, header.Value);
+
+                        JulietLogger.Info(TAG, header.Key + ", " + header.Value);
+                    }
                 }
             }
         }

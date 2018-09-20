@@ -20,6 +20,8 @@ namespace JulietUtil.API
         private void Awake()
         {
             _instance = this;
+
+            UpdateHeader();
         }
 
         #endregion
@@ -33,6 +35,7 @@ namespace JulietUtil.API
 
         [Header("Header Configure")]
         public JulietHeaderConfig JulietHeaderConfig;
+        
         
         public void SetOptionalKeyHeader(params string[] optionals)
         {
