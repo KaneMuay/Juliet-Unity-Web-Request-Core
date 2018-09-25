@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-using JulietUtil.Abstract;
+﻿using JulietUtil.Abstract;
 using JulietUtil.API;
+using System;
+using UnityEngine;
 
 namespace JulietUtil.Request
 {
@@ -17,6 +14,8 @@ namespace JulietUtil.Request
         public override ITextureRequest SetURL(string url)
         {
             this.url = url;
+
+            JulietLogger.Info(TAG, "Url " + this.url);
 
             return this;
         }

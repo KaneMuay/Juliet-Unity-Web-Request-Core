@@ -1,8 +1,6 @@
 ﻿using JulietUtil.API;
 using JulietUtil.Interface;
 using JulietUtil.Request;
-using System;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace JulietUtil.Master

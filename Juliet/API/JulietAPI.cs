@@ -127,9 +127,10 @@ namespace JulietUtil.API
 
         public IEnumerator Connecting(MethodForm methodForm, Action<Texture> successCallback, Action<string> failCallback)
         {
-            JulietLogger.Info(TAG, "Connecting to ... " + methodForm.WebRequest.url);
+            JulietLogger.Info(TAG, "Connecting to ... " + methodForm.URL);
 
-            UnityWebRequest www = UnityWebRequestTexture.GetTexture(methodForm.URL);
+            Uri uri = new Uri(methodForm.URL);
+            UnityWebRequest www = UnityWebRequestTexture.GetTexture(uri);
 
             yield return www.SendWebRequest();
             

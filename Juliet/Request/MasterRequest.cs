@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-using JulietUtil.Interface;
+﻿
 using JulietUtil.Abstract;
+using JulietUtil.Interface;
 
 namespace JulietUtil.Request
 {

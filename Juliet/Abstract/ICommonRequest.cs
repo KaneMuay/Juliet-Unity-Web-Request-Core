@@ -1,6 +1,5 @@
-﻿using System;
-using UnityEngine;
-using JulietUtil.Request;
+﻿using JulietUtil.Request;
+using System;
 
 namespace JulietUtil.Abstract
 {
