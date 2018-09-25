@@ -1,14 +1,19 @@
 ﻿
+using JulietUtil.Abstract;
+using JulietUtil.API;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-using JulietUtil.Abstract;
-using JulietUtil.API;
-
 namespace JulietUtil.Request
 {
+    public struct ImageType
+    {
+        public Byte[] imgBytes;
+        public string filename;
+        public string mineType;
+    }
+
     public class CommonRequest : ICommonRequest
     {
         private const string TAG = "COMMON REQUEST";
@@ -16,7 +21,7 @@ namespace JulietUtil.Request
         private MethodType methodType = MethodType.POST;
         private string url;
         private Dictionary<string, object> attributes = new Dictionary<string, object>();
-        private Dictionary<string, byte[]> attributeImages = new Dictionary<string, byte[]>();
+        private Dictionary<string, ImageType> attributeImages = new Dictionary<string, ImageType>();
 
         public override ICommonRequest SetURL(string url, MethodType methodType = MethodType.GET)
         {
@@ -53,11 +58,11 @@ namespace JulietUtil.Request
             return this;
         }
 
-        public override ICommonRequest SetEventImageAttribute(string key, byte[] values)
+        public override ICommonRequest SetEventImageAttribute(string key, ImageType values)
         {
             this.attributeImages.Add(key, values);
 
-            JulietLogger.Info(TAG, "Key " + key + ", Value " + values.Length);
+            JulietLogger.Info(TAG, "Key " + key + ", Filename " + values.filename + ", MineType " + values.mineType + ", Size " + values.imgBytes.Length);
 
             return this;
         }
@@ -68,68 +73,33 @@ namespace JulietUtil.Request
 
             MethodForm form = new MethodForm()
             {
-                Method = this.methodType,
+                Method = MethodType.POST,
                 URL = this.url
             };
 
-            switch (this.methodType)
+            WWWForm contentPost = new WWWForm();
+
+            foreach (var attribute in attributes)
             {
-                case MethodType.POST:
+                string key = attribute.Key;
+                string value = attribute.Value.ToString();
 
-                    WWWForm contentPost = new WWWForm();
+                JulietLogger.Info(TAG, "SendWithImage Key " + key + ", Value " + value);
 
-                    foreach (var attribute in attributes)
-                    {
-                        string key = attribute.Key;
-                        string value = attribute.Value.ToString();
-
-                        JulietLogger.Info(TAG, "SendWithImage Key " + key + ", Value " + value);
-
-                        contentPost.AddField(key, value);
-                    }
-
-                    foreach (var attribute in attributeImages)
-                    {
-                        string key = attribute.Key;
-                        byte[] value = attribute.Value;
-                        string filename = DateTime.Now.ToString("yyyyMMddHHmmss") + ".gif";
-
-                        JulietLogger.Info(TAG, "SendWithImage Key " + key + ", Value " + value.Length + ", filename " + filename);
-
-                        contentPost.AddBinaryData(key, value, filename, "image/gif");
-                    }
-
-                    form.POST_IMAGES = contentPost;
-
-                    break;
-                case MethodType.GET:
-
-                    form.GET = this.url;
-
-                    break;
-                case MethodType.PUT:
-
-                    Dictionary<string, string> contentPut = new Dictionary<string, string>();
-
-                    foreach (var attribute in attributes)
-                    {
-                        string key = attribute.Key;
-                        string value = (string)attribute.Value;
-
-                        contentPut.Add(key, value);
-                    }
-
-                    string jsonPut = JsonUtility.ToJson(contentPut);
-
-                    form.PUT = System.Text.Encoding.UTF8.GetBytes(jsonPut);
-
-                    break;
-                case MethodType.DELETE:
-
-                    form.DELETE = this.url;
-
-                    break;
+                contentPost.AddField(key, value);
             }
+
+            foreach (var attribute in attributeImages)
+            {
+                string key = attribute.Key;
+                ImageType value = attribute.Value;
+
+                JulietLogger.Info(TAG, "SendWithImage Key " + key + ", Filename " + value.filename + ", MineType " + value.mineType + ", Size " + value.imgBytes.Length);
+
+                contentPost.AddBinaryData(key, value.imgBytes, value.filename, value.mineType);
+            }
+
+            form.POST_IMAGES = contentPost;
 
             JulietAPI.Instance.Request(form, success, fail);
         }
